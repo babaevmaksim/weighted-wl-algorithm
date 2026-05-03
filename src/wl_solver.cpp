@@ -1,28 +1,29 @@
 #include "graph.h"
-#include <map>
 #include <vector>
+#include <map>
 #include <algorithm>
+#include <tuple>
 
-void refine_colors(Graph& g) { // g - имя для графа, & - вместо того чтобы создавать физическую копию всего графа, мы просто создаем ссылку на него
-    
-    // std::pair<int, double> - цвет соседнего узла и вес ребра, которая к нему ведёт;
-    // std::vector<std::pair<int, double>> - соответственно список цветов соседних узлов и весов рёбер, которые к ним ведут
-    // std::map<std::vector<std::pair<int, double>>, int> - цвет для соответствующего набора цветов соседних узлов и весов рёбер, которые к ним ведут
-    
-    std::map<std::vector<std::pair<int, double>>, int> color_map; 
-    std::vector<int> next_colors(g.adj.size()); // здесь сохраняем новые цвета для узлов, чтобы сразу их не менять в графе, а поменять только после того, как мы пройдём все узлы
+void refine_colors(Graph& g) {
+
+    std::map<std::vector<std::tuple<int, double, double>>, int> color_map;
+    std::vector<double> next_colors(g.adj.size());
 
     for (int v = 0; v < g.adj.size(); ++v) {
-        std::vector<std::pair<int, double>> neighbors; // сюда будем собирать цвет соседних узлов и вес рёбер к ним для узла v
-        for (auto& edge : g.adj[v]) { // проходимся по каждому соседнему узлу и ребра к ней для вершины v
-            neighbors.push_back({g.colors[edge.to], edge.weight}); // добавляем в neighbors цвет соседнего узла и вес ребра для v
+  
+        std::vector<std::tuple<int, double, double>> neighbors;
+        
+        for (const auto& edge : g.adj[v]) {
+            neighbors.push_back(std::make_tuple(edge.type, g.colors[edge.to], edge.weight));
         }
-        std::sort(neighbors.begin(), neighbors.end()); // сортируем, т. к. для графа неважно, в каком порядки записаны соседние узлы, поэтому нам надо сделать мультимножества одинаковыми
+        
+        std::sort(neighbors.begin(), neighbors.end());
 
-        if (color_map.find(neighbors) == color_map.end()) { // условие, что в color_map не содержится neighbors
-            color_map[neighbors] = color_map.size(); // добавляем в color_map новый набор и присваиваем цвет (int) размер color_map (он на 1 больше)
+        if (color_map.find(neighbors) == color_map.end()) {
+            color_map[neighbors] = color_map.size();
         }
-        next_colors[v] = color_map[neighbors]; // записываем новый цвет для узла v
+        next_colors[v] = (double)color_map[neighbors];
     }
-    g.colors = next_colors; // меняем цвета одновременно для всех узлов
+
+    g.colors = next_colors;
 }

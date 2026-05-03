@@ -1,60 +1,76 @@
 #include <iostream>
+#include <vector>
+#include <set>
 #include "graph.h"
+#include <fstream>
+#include <iostream>
+
+// загрузка
+Graph load_from_file(const std::string& filename) {
+    std::ifstream file(filename);
+    Graph g;
+    if (!file.is_open()) {
+        std::cerr << "Error: could not open file " << filename << std::endl;
+        return g;
+    }
+
+    int n, m;
+    file >> n >> m;
+    g.adj.resize(n);
+    g.colors.resize(n);
+
+    // записываем атрибуты (цвета) вершин
+    for (int i = 0; i < n; ++i) {
+        file >> g.colors[i];
+    }
+
+    // записываем ребра
+    for (int i = 0; i < m; ++i) {
+        int u, v;
+        double w;
+        file >> u >> v >> w;
+        g.adj[u].push_back({v, w, 1});
+        g.adj[v].push_back({u, w, -1});
+    }
+    return g;
+}
 
 void refine_colors(Graph& g);
 
+// считаем, сколько разных цветов сейчас в графе
+int count_unique_colors(const Graph& g) {
+    std::set<int> unique_colors(g.colors.begin(), g.colors.end());
+    return unique_colors.size();
+}
+
+void run_until_stable(Graph& g) {
+    int last_count = 0;
+    int current_count = count_unique_colors(g);
+    int iteration = 0;
+
+    // пока количество цветов растет - продолжаем
+    while (current_count > last_count) {
+        iteration++;
+        last_count = current_count;
+        
+        refine_colors(g);
+        
+        current_count = count_unique_colors(g);
+        std::cout << "Iteration " << iteration << ": " << current_count << " colors\n";
+    }
+}
+
 int main() {
-    // Граф А
-    Graph graphA;
+
+    Graph g = load_from_file("tests/financial_network_pro.txt");
     
-    // делаем 3 вершины (0, 1, 2)
-    graphA.adj.resize(3);
-    
-    // добавляем рёбра и веса для них:  0 -> 1 (вес 1.0), 0 -> 2 (вес 1.0)
-    graphA.adj[0].push_back({1, 1.0}); 
-    graphA.adj[0].push_back({2, 1.0});
-    
-    // 1 -> 0, 1 -> 2
-    graphA.adj[1].push_back({0, 1.0});
-    graphA.adj[1].push_back({2, 1.0});
-    
-    // 2 -> 0, 2 -> 1
-    graphA.adj[2].push_back({0, 1.0});
-    graphA.adj[2].push_back({1, 1.0});
+    if (g.adj.empty()) return 1;
 
-    // начальный цвет "1"
-    graphA.colors = {1, 1, 1};
+    std::cout << "Starting refinement..." << std::endl;
+    run_until_stable(g);
 
-
-    // Граф B, аналогично
-    Graph graphB;
-    graphB.adj.resize(3);
-
-    // вес 5.0
-    graphB.adj[0].push_back({1, 5.0}); 
-    graphB.adj[0].push_back({2, 1.0});
-
-    graphB.adj[1].push_back({0, 5.0});
-    graphB.adj[1].push_back({2, 1.0});
-
-    graphB.adj[2].push_back({0, 1.0});
-    graphB.adj[2].push_back({1, 1.0});
-
-    graphB.colors = {1, 1, 1};
-
-    refine_colors(graphA);
-    refine_colors(graphB);
-
-    std::cout << "Graph A (Uniform weights) colors: ";
-    for (int c : graphA.colors) {
-        std::cout << c << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Graph B (Different weights) colors: ";
-    for (int c : graphB.colors) {
-        std::cout << c << " ";
-    }
+    std::cout << "Final colors: ";
+    for (int c : g.colors) std::cout << c << " ";
     std::cout << std::endl;
 
     return 0;
