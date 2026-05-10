@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 
-// загрузка
 Graph load_from_file(const std::string& filename) {
     std::ifstream file(filename);
     Graph g;
