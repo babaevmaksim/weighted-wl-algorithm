@@ -41,8 +41,8 @@ High-performance, numerically stable C++17 library and command-line engine for *
 The classical **1-Weisfeiler-Lehman (1-WL)** heuristic (Weisfeiler & Leman, 1968) is the foundational cornerstone of algorithmic graph isomorphism testing, graph kernels (Shervashidze et al., 2011), and message-passing Graph Neural Networks (Xu et al., 2018; Morris et al., 2019).
 
 However, classical 1-WL exhibits two critical limitations:
-1. **Topological Symmetry Bias:** It assumes undirected edges, completely discarding directional asymmetry (in-degrees vs. out-degrees).
-2. **Discrete Label Restriction:** It operates strictly on discrete categorical labels. Real-world applications rely on continuous physical features (node attributes) and real-valued link weights (latencies, bandwidth, transaction volumes).
+1. **Topological Symmetry Bias.** It assumes undirected edges, completely discarding directional asymmetry (in-degrees vs. out-degrees).
+2. **Discrete Label Restriction.** It operates strictly on discrete categorical labels. Real-world applications rely on continuous physical features (node attributes) and real-valued link weights (latencies, bandwidth, transaction volumes).
 
 This repository provides an optimized, mathematically sound extension of 1-WL supporting:
 * **Directed edges** with explicit incoming (`-1`) and outgoing (`+1`) message-passing channels.
@@ -56,9 +56,9 @@ This repository provides an optimized, mathematically sound extension of 1-WL su
 
 While graph isomorphism is often treated as abstract combinatorics, directed weighted 1-WL directly addresses key challenges in **systems programming and infrastructure engineering**:
 
-* **Storage Systems & Distributed I/O (SAN/NAS):** Modeling transactional dependency graphs between asynchronous storage controllers. Vertices represent I/O requests or cache blocks; directed edges represent read/write causal dependencies; weights correspond to queue latency or transfer sizes.
-* **Compiler Analysis & Optimization (RISC-V / LLVM):** Control Flow Graphs (CFGs) and Instruction Dependency Graphs are directed and weighted (execution frequencies from profiling, pipeline latency). Subgraph canonicalization detects recurring basic-block idioms, enables loop unrolling/vectorization, and optimizes register allocation.
-* **Numerical Determinism in System Software:** Comparing continuous metrics across distributed nodes often causes non-deterministic bugs due to IEEE 754 precision issues. Our grid quantization mechanism guarantees a mathematically rigorous equivalence relation with zero floating-point drift.
+* **Storage Systems & Distributed I/O (SAN/NAS).** Modeling transactional dependency graphs between asynchronous storage controllers. Vertices represent I/O requests or cache blocks; directed edges represent read/write causal dependencies; weights correspond to queue latency or transfer sizes.
+* **Compiler Analysis & Optimization (RISC-V / LLVM).** Control Flow Graphs (CFGs) and Instruction Dependency Graphs are directed and weighted (execution frequencies from profiling, pipeline latency). Subgraph canonicalization detects recurring basic-block idioms, enables loop unrolling/vectorization, and optimizes register allocation.
+* **Numerical Determinism in System Software.** Comparing continuous metrics across distributed nodes often causes non-deterministic bugs due to IEEE 754 precision issues. Our grid quantization mechanism guarantees a mathematically rigorous equivalence relation with zero floating-point drift.
 
 ---
 
@@ -98,9 +98,9 @@ This partitions the real line into discrete buckets $[k\varepsilon - \varepsilon
 ### Complexity Analysis
 
 For a graph with $n$ vertices and $m$ directed edges:
-1. **Message collection:** $O(m)$ steps.
-2. **Lexicographical sorting:** $\sum_v O(d_v \log d_v) \le O(m \log d_{\max})$ where $d_{\max}$ is maximum vertex degree.
-3. **Canonical color assignment:** $O(m \log K)$ where $K \le n$ is the number of unique partition classes.
+1. **Message collection.** $O(m)$ steps.
+2. **Lexicographical sorting.** $\sum_v O(d_v \log d_v) \le O(m \log d_{\max})$ where $d_{\max}$ is maximum vertex degree.
+3. **Canonical color assignment.** $O(m \log K)$ where $K \le n$ is the number of unique partition classes.
 
 **Total per-iteration complexity:** $\mathcal{O}(m \log d_{\max} + m \log K)$ — virtually linear in the number of edges.
 
@@ -318,8 +318,8 @@ Benchmarked on an Intel Core i7 @ 2.7 GHz (single thread, `-O3`):
 ### 3. TUDataset Benchmark (MUTAG)
 
 Processing the entire MUTAG collection (188 molecular graphs, 3,371 atoms, 7,442 bonds):
-* **Total computation time:** **5.67 ms**
-* **Average latency per graph:** **0.030 ms** (30 microseconds)
+* **Total computation time.** **5.67 ms**
+* **Average latency per graph.** **0.030 ms** (30 microseconds)
 
 ---
 
@@ -327,8 +327,8 @@ Processing the entire MUTAG collection (188 molecular graphs, 3,371 atoms, 7,442
 
 This project was developed as part of academic research at **Saint Petersburg State University (SPbU)**, Faculty of Mathematics and Mechanics, Department of Systems Programming.
 
-* **Author:** Maxim Babaev (SPbU)
-* **Scientific Advisor:** Yu. A. Andreev (Senior Lecturer, Department of Systems Programming, SPbU)
+* **Author.** Maxim Babaev (SPbU)
+* **Scientific Advisor.** Yu. A. Andreev (Senior Lecturer, Department of Systems Programming, SPbU)
 
 ---
 
