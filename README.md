@@ -325,7 +325,7 @@ Processing the entire MUTAG collection (188 molecular graphs, 3,371 atoms, 7,442
 
 ## Citation & Academic Context
 
-This project was developed as part of academic research at **Saint Petersburg State University (SPbU)**, Faculty of Mathematics and Computer Science, Department of Systems Programming.
+This project was developed as part of academic research at **Saint Petersburg State University (SPbU)**, Faculty of Mathematics and Mechanics, Department of Systems Programming.
 
 * **Author:** Maxim Babaev (SPbU)
 * **Scientific Advisor:** Yu. A. Andreev (Senior Lecturer, Department of Systems Programming, SPbU)
