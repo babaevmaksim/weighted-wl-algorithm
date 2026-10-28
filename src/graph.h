@@ -1,17 +1,11 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <vector>
+// Backward-compatibility wrapper for legacy includes
+#include "weighted_wl/graph.hpp"
+#include "weighted_wl/wl_solver.hpp"
 
-struct Edge {
-    int to;
-    double weight;
-    int type; // 1 - исходящее, -1 - входящее
-};
+using Edge = weighted_wl::Edge;
+using Graph = weighted_wl::Graph;
 
-struct Graph {
-    std::vector<std::vector<Edge>> adj;
-    std::vector<double> colors;
-};
-
-#endif
+#endif // GRAPH_H

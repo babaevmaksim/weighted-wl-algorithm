@@ -1,1 +1,30 @@
+# Build directories
+build/
+bin/
+lib/
+cmake-build-*/
+
+# Compiled binaries and libraries
 *.exe
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Temporary output files
+*.dot
+*.log
+*.tmp
+
+# IDE configurations
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS artifacts
+.DS_Store
+Thumbs.db

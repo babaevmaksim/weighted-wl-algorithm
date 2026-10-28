@@ -1,0 +1,59 @@
+name: C++ CI / CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+        build_type: [ Release ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ninja
+        uses: ashutoshvarma/setup-ninja@master
+        with:
+          version: 1.11.1
+
+      - name: Configure CMake
+        run: >
+          cmake -B build
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -G Ninja
+
+      - name: Build Targets
+        run: cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Run Unit Tests (CTest)
+        working-directory: build
+        run: ctest --output-on-failure --config ${{ matrix.build_type }}
+
+      - name: Run CLI Smoke Test
+        run: |
+          ./build/wl_cli -i tests/financial_network_pro.txt -v
+        if: runner.os != 'Windows'
+
+      - name: Run CLI Smoke Test (Windows)
+        run: |
+          .\build\wl_cli.exe -i tests/financial_network_pro.txt -v
+        if: runner.os == 'Windows'
+
+      - name: Run Benchmark Suite
+        run: |
+          ./build/wl_benchmark
+        if: runner.os != 'Windows'
+
+      - name: Run Benchmark Suite (Windows)
+        run: |
+          .\build\wl_benchmark.exe
+        if: runner.os == 'Windows'
