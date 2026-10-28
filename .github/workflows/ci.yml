@@ -57,3 +57,4 @@ jobs:
         run: |
           .\build\wl_benchmark.exe
         if: runner.os == 'Windows'
+

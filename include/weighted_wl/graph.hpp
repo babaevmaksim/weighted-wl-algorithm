@@ -119,3 +119,4 @@ bool export_to_dot(const Graph& g, const std::string& filename);
 } // namespace weighted_wl
 
 #endif // WEIGHTED_WL_GRAPH_HPP
+

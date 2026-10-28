@@ -23,3 +23,4 @@ echo "Running Financial Network Demo..."
 
 echo ""
 echo "Done! All experiments verified."
+

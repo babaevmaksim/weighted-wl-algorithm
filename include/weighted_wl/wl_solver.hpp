@@ -112,3 +112,4 @@ void refine_colors(Graph& g);
 } // namespace weighted_wl
 
 #endif // WEIGHTED_WL_SOLVER_HPP
+

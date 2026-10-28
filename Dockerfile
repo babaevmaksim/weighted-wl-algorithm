@@ -26,3 +26,4 @@ COPY --from=builder /app/data /app/data
 
 ENTRYPOINT ["wl_cli"]
 CMD ["-i", "tests/financial_network_pro.txt", "-v"]
+

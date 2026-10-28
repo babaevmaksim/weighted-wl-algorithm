@@ -120,3 +120,4 @@ std::vector<Graph> TUDatasetReader::load_dataset(const std::string& dataset_dir,
 }
 
 } // namespace weighted_wl
+

@@ -11,3 +11,4 @@ BreakBeforeBraces: Attach
 IncludeBlocks: Regroup
 SortIncludes: CaseSensitive
 Standard: c++17
+
